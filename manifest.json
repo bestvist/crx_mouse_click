@@ -13,5 +13,6 @@
   "content_scripts": [{
     "matches": ["*://*/*"],
     "js": ["index.js"]
-  }]
+  }],
+  "homepage_url": "https://github.com/bestvist/crx_mouse_click"
 }
