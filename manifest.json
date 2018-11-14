@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "鼠标效果",
+  "version": "0.0.1",
+  "description": "鼠标效果",
+  "icons":
+	{
+		"16": "img/icon.png",
+		"48": "img/icon.png",
+		"128": "img/icon.png"
+	},
+  "author": "vist",
+  "content_scripts": [{
+    "matches": ["*://*/*"],
+    "js": ["index.js"]
+  }]
+}
