@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>barrage example</title>
+    <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
+    <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
+    <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
+
+
+    <style>
+        .article-barrage {
+            position: fixed;
+            bottom: 130px;
+            right: 30px;
+            z-index: 10;
+        }
+
+        .article-barrage button {
+            width: 45px;
+            height: 40px;
+            border: none;
+            font-size: 20px;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 2px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .article-barrage .content {
+            width: 300px;
+            height: 60px;
+        }
+
+        .article-barrage p {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <Poptip class="article-barrage" v-model="visible" placement="left-start">
+            <i-button>弹</i-button>
+            <div slot="content" class="content">
+                <i-input v-model="barrageText" search :enter-button="barrageBtnText" :disabled="disabled" @on-search="handleEnter"
+                    placeholder="Enter something..."></i-input>
+
+                <p>弹幕：<i-switch v-model="showBarrage" @on-change="handleToggleBarrage">
+                        <span slot="open">开启</span>
+                        <span slot="close">关闭</span>
+                    </i-switch>
+                </p>
+            </div>
+        </Poptip>
+    </div>
+    <script>
+        class Barrage {
+            constructor() {
+                this.canvas = document.createElement('canvas');
+
+                this.canvas.style.position = 'fixed';
+                this.canvas.style.bottom = 0;
+                this.canvas.style.left = 0;
+                this.canvas.style.zIndex = 100;
+                this.canvas.style.pointerEvents = 'none';
+                this.canvas.width = window.innerWidth;
+                // this.canvas.height = window.innerHeight;
+                this.canvas.height = 200;
+                document.body.appendChild(this.canvas);
+
+                let rect = this.canvas.getBoundingClientRect();
+                this.w = rect.right - rect.left;
+                this.h = rect.bottom - rect.top;
+                this.ctx = this.canvas.getContext('2d');
+                this.ctx.font = '20px Microsoft YaHei';
+                this.barrageList = [];
+            }
+
+            //添加弹幕列表
+            shoot(value) {
+                let top = this.getTop();
+                let color = this.getColor();
+                let offset = this.getOffset();
+                let width = Math.ceil(this.ctx.measureText(value).width);
+
+                let barrage = {
+                    value: value,
+                    top: top,
+                    left: this.w,
+                    color: color,
+                    offset: offset,
+                    width: width
+                }
+                this.barrageList.push(barrage);
+            }
+
+            //开始绘制
+            draw() {
+                if (this.barrageList.length) {
+                    this.ctx.clearRect(0, 0, this.w, this.h);
+                    for (let i = 0; i < this.barrageList.length; i++) {
+                        let b = this.barrageList[i];
+                        if (b.left + b.width <= 0) {
+                            this.barrageList.splice(i, 1);
+                            i--;
+                            continue;
+                        }
+                        b.left -= b.offset;
+                        this.drawText(b);
+                    }
+                }
+                requestAnimationFrame(this.draw.bind(this));
+            }
+
+            //绘制文字
+            drawText(barrage) {
+                this.ctx.fillStyle = barrage.color;
+                this.ctx.fillText(barrage.value, barrage.left, barrage.top);
+            }
+
+            //获取随机颜色
+            getColor() {
+                return '#' + Math.floor(Math.random() * 0xffffff).toString(16);
+            }
+
+            //获取随机top
+            getTop() {
+                //canvas绘制文字x,y坐标是按文字左下角计算，预留30px
+                return Math.floor(Math.random() * (this.h - 30)) + 30;
+            }
+
+            //获取偏移量
+            getOffset() {
+                return +(Math.random() * 4).toFixed(1) + 1;
+            }
+
+            // 显示
+            show() {
+                this.canvas.style.visibility = 'visible';
+            }
+
+            // 隐藏
+            hide() {
+                this.canvas.style.visibility = 'hidden';
+            }
+
+        }
+
+        new Vue({
+            el: '#app',
+            data: {
+                visible: false,
+                showBarrage: true,
+                barrage: null,
+                barrageText: '',
+                disabled: false,
+                timer: null,
+            },
+            computed: {
+                barrageBtnText() {
+                    return this.timer ? this.timer + 's' : '发送';
+                }
+            },
+            methods: {
+                handleEnter(val) {
+                    if (!val || this._interval) return;
+                    this.barrage.shoot(val);
+                    this.barrageText = '';
+                    this.disabled = true;
+                    this.timer = 10;
+                    this._interval = setInterval(() => {
+                        this.timer--;
+                        if (!this.timer) {
+                            this.disabled = false;
+                            clearInterval(this._interval);
+                            this._interval = null;
+                        }
+                    }, 1000);
+
+                    // TODO: post barrage
+                },
+                handleToggleBarrage(show) {
+                    if (show) {
+                        this.barrage.show();
+                    } else {
+                        this.barrage.hide();
+                    }
+                },
+                init() {
+                    this.barrage = new Barrage();
+                    this.barrage.draw();
+                    // TODO: get barrage
+
+                    const textList = [];
+                    textList.sort(() => {
+                        return Math.random() - 0.5
+                    }).forEach((t, i) => {
+                        setTimeout(() => {
+                            this.barrage.shoot(t);
+                        }, i * 1000)
+                    })
+                }
+            },
+            mounted() {
+                this.init();
+            }
+        })
+    </script>
+</body>
+
+</html>

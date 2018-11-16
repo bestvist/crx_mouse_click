@@ -3,12 +3,12 @@ class Barrage {
         this.canvas = document.createElement('canvas');
 
         this.canvas.style.position = 'fixed';
-        this.canvas.style.top = 0;
+        this.canvas.style.bottom = 0;
         this.canvas.style.left = 0;
         this.canvas.style.zIndex = 999;
         this.canvas.style.pointerEvents = 'none';
         this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        // this.canvas.height = window.innerHeight;
         this.canvas.height = 200;
         document.body.appendChild(this.canvas);
 
@@ -101,12 +101,13 @@ let _interval = null,
     timer;
 
 $div.style.position = 'fixed';
-$div.style.top = '50px';
-$div.style.right = '50px';
+$div.style.bottom = '130px';
+$div.style.right = '30px';
 $div.style.zIndex = '998';
 $btn.innerText = '发送';
 $btn.onclick = function () {
     barrage.shoot($input.value);
+    $input.setAttribute('disabled',true);
     $input.value = '';
     lockBtn();
 }
@@ -123,6 +124,7 @@ function lockBtn() {
         } else {
             $btn.innerText = '发送';
             $btn.removeAttribute('disabled');
+            $input.removeAttribute('disabled');
             clearInterval(_interval);
         }
     }, 1000)
@@ -130,4 +132,4 @@ function lockBtn() {
 
 $div.appendChild($input);
 $div.appendChild($btn);
-document.body.appendChild($div);
+// document.body.appendChild($div);
