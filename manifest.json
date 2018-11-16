@@ -16,8 +16,8 @@
   },
   "content_scripts": [{
     "matches": ["*://*/*"],
-    "js": ["index.js"]
+    "js": ["index.js","barrage.js"]
   }],
   "homepage_url": "https://github.com/bestvist/crx_mouse_click",
-  "permissions": [  "tabs"]
+  "permissions": ["tabs"]
 }
