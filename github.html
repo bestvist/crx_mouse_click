@@ -42,7 +42,7 @@
             </div>
 
             <div class="github-repos" v-for="(repo,index) in repos" :key="index">
-                <Card>
+                <Card :bordered="false" dis-hover>
                     <h3 slot="title"><a :href="repo.html_url" target="_blank">
                             <Tag v-if="repo.fork" color="default">
                                 <Icon type="ios-git-network"></Icon>&nbsp;Forked

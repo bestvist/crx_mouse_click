@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
+    <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
+    <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
+
+    <style>
+        .doc-content{
+            padding: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="doc-content">
+            <Alert show-icon>排名不分先后</Alert>
+            <Card :bordered="false" dis-hover v-for="doc in documents">
+                <h3 slot="title"><a :href="doc.link" target="_blank">{{doc.name}}</a></h3>
+                <p>{{doc.desc}}</p>
+            </Card>
+        </div>
+    </div>
+
+    <script>
+        documents = [{
+                name: 'Vue',
+                desc: '渐进式 JavaScript 框架',
+                link: 'https://cn.vuejs.org/v2/guide/'
+            },
+            {
+                name: 'React',
+                desc: '用于构建用户界面的 JavaScript 库',
+                link: 'https://react.docschina.org/docs/hello-world.html'
+            },
+            {
+                name: 'Angular',
+                desc: '一套框架，多种平台 移动端 & 桌面端',
+                link: 'https://www.angular.cn/docs'
+            },
+            {
+                name: 'Sass',
+                desc: '世界上最成熟、最稳定、最强大的专业级CSS扩展语言！',
+                link: 'https://www.sass.hk/docs/'
+            },
+            {
+                name: 'Less',
+                desc: 'Less 是一门 CSS 预处理语言，它扩展了 CSS 语言，增加了变量、Mixin、函数等特性，使 CSS 更易维护和扩展。',
+                link: 'http://lesscss.cn/'
+            },
+            {
+                name: 'Gulp',
+                desc: '用自动化构建工具增强你的工作流程！',
+                link: 'https://www.gulpjs.com.cn/docs/'
+            },
+            {
+                name: 'Webpack',
+                desc: 'webpack 是一个现代 JavaScript 应用程序的静态模块打包器(module bundler)。',
+                link: 'https://www.webpackjs.com/concepts/'
+            },
+            {
+                name: 'Node.js',
+                desc: 'Node.js® 是一个基于 Chrome V8 引擎 的 JavaScript 运行时。',
+                link: 'http://nodejs.cn/api/'
+            },
+            {
+                name: 'Electron',
+                desc: '使用 JavaScript, HTML 和 CSS 构建跨平台的桌面应用',
+                link: 'http://electronjs.org/docs'
+            },
+            {
+                name: 'Ionic',
+                desc: '以Web形式在任何平台上，一个代码库构建令人惊叹的应用程序。',
+                link: 'https://ionicframework.com/docs/'
+            },
+            {
+                name: 'React Native',
+                desc: '使用JavaScript和React编写原生移动应用',
+                link: 'https://reactnative.cn/docs/getting-started/'
+            },
+            {
+                name: 'Flutter',
+                desc: '极速构建漂亮的原生应用',
+                link: 'https://flutterchina.club/docs/'
+            },
+            {
+                name: 'Element',
+                desc: 'Element，一套为开发者、设计师和产品经理准备的基于 Vue 2.0 的桌面端组件库',
+                link: 'http://element-cn.eleme.io/#/zh-CN'
+            },
+            {
+                name: 'iView',
+                desc: '一套基于 Vue.js 的高质量 UI 组件库',
+                link: 'https://www.iviewui.com/docs/guide/install'
+            }
+        ]
+
+        new Vue({
+            el: '#app',
+            data: {
+                documents: documents
+            },
+            mounted() {
+
+            }
+        })
+    </script>
+
+</body>
+
+</html>
