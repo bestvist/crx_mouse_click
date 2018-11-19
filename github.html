@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
+    <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
+    <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+    <style>
+
+        .github-content {
+            padding: 20px;
+        }
+
+        .github-search {
+            padding: 20px;
+        }
+
+        .github-repos {
+            padding: 20px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ececec;
+        }
+
+        .github-repos .attr {
+            color: #2b85e4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <div class="github-content">
+            <div class="github-search">
+                <i-input search placeholder="搜索..." v-model="keyword" @on-search="handleSearch" />
+            </div>
+
+            <div class="github-repos" v-for="(repo,index) in repos" :key="index">
+                <Card>
+                    <h3 slot="title"><a :href="repo.html_url" target="_blank">
+                            <Tag v-if="repo.fork" color="default">
+                                <Icon type="ios-git-network"></Icon>&nbsp;Forked
+                            </Tag>{{repo.name}}
+                        </a>
+                    </h3>
+                    <p>{{repo.description}}</p>
+                    <p class="attr">
+                        {{repo.language}}&nbsp;&nbsp;
+                        <Icon type="ios-heart" size="18"></Icon>&nbsp;{{filterThuns(repo.stargazers_count)}}
+                        &nbsp;&nbsp;
+                        <Icon type="ios-git-network" size="18"></Icon>&nbsp;{{filterThuns(repo.forks_count)}}
+                    </p>
+                </Card>
+
+            </div>
+
+            <div align="center">
+                <Page v-if="showPagination" size="small" :total="total" :current="pageIndex" :page-size="pageSize"
+                    @on-change="handleChangePage" />
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                repos: [],
+                showPagination: false,
+                keyword: '',
+                pageIndex: 1,
+                pageSize: 10,
+                total: 0
+            },
+            methods: {
+                handleSearch(keyword) {
+                    this.pageIndex = 1;
+                    this.total = 0;
+                    if (keyword) {
+                        this.getGithubSearch(keyword);
+                    } else {
+                        this.getGithub();
+                    }
+                },
+                handleChangePage(page) {
+                    this.pageIndex = page;
+                    this.getGithubSearch(this.keyword);
+                },
+                filterThuns(num) {
+                    return (num + '').replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+                },
+                getGithubSearch(keyword) {
+                    $.get(
+                        `https://api.github.com/search/repositories?q=${keyword}&page=${this.pageIndex}&per_page=${this.pageSize}`,
+                        (result) => {
+                            this.repos = result.items;
+                            this.total = result.total_count > 100 * 10 ? 100 * 10 : result.total_count;
+                            this.showPagination = true;
+                        })
+                },
+                getGithub() {
+                    $.get('https://api.github.com/users/bestvist/repos', (result) => {
+                        this.showPagination = false;
+                        this.repos = result;
+                    })
+                }
+            },
+            mounted() {
+                this.getGithub();
+            }
+        })
+    </script>
+</body>
+
+</html>
