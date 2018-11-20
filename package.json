@@ -1,0 +1,22 @@
+{
+  "name": "crx_mouse_click",
+  "version": "1.0.0",
+  "description": "* 1、chrome扩展程序(chrome://extensions/)\r * 2、开发模式\r * 3、加载已解压扩展程序",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bestvist/crx_mouse_click.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bestvist/crx_mouse_click/issues"
+  },
+  "homepage": "https://github.com/bestvist/crx_mouse_click#readme",
+  "dependencies": {
+    "phantom": "^6.0.3"
+  }
+}

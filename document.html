@@ -11,6 +11,43 @@
     <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
 
     <style>
+        /*以下滚动条只针对chrome有效*/
+        /*---滚动条默认显示样式--*/
+        ::-webkit-scrollbar-thumb {
+            background-color: rgb(190, 190, 190);
+            outline-offset: -2px;
+            -webkit-border-radius: 3px;
+        }
+
+        /*---鼠标点击滚动条显示样式--*/
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: rgb(160, 160, 160);
+            -webkit-border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:active {
+            background-color: rgb(146, 146, 146);
+            -webkit-border-radius: 3px;
+        }
+
+        /*---滚动条大小--*/
+        ::-webkit-scrollbar {
+            background: #f5f5f5;
+            width: 6px;
+            height: 6px;
+        }
+
+        /*---滚动框背景样式--*/
+        ::-webkit-scrollbar-track-piece {
+            background-color: #fff;
+            -webkit-border-radius: 3px;
+        }
+
+        body{
+            background: #f5f5f5;
+        }
+
+
         .page-content {
             padding: 20px;
         }
@@ -63,9 +100,10 @@
 
     <div id="app">
         <div class="page-content">
-            <h2 class="title">最佳设计</h2>
+            <h2 class="title">最佳设计 <i-button size="small" type="primary">提交网站</i-button>
+            </h2>
             <Row :gutter="40">
-                <i-col :sm="12" :md="12" :lg="8" v-for="page in pages">
+                <i-col :sm="12" :md="8" v-for="page in pages">
                     <div class="page">
                         <a class="page-preview" :href="page.link" target="_blank">
                             <img :src="page.img">
@@ -91,19 +129,25 @@
                 name: 'Razvan Garofeanu',
                 desc: 'I DESIGN, THEREFORE I BECOME',
                 link: 'http://www.razvangarofeanu.com',
-                img: ''
+                img: './razvangarofeanu.png'
             },
             {
                 name: 'Mickaël Larchevêque',
                 desc: "A french Creative Director/Designer.",
                 link: 'http://dotmick.com',
-                img: ''
+                img: 'dotmick.png'
             },
             {
                 name: 'Resident',
                 desc: 'New Zealand Furniture & Lighting | Resident',
                 link: 'https://resident.co.nz/',
-                img: ''
+                img: 'co.png'
+            },
+            {
+                name: 'lustonelabel',
+                desc: 'New Zealand Furniture & Lighting | Resident',
+                link: 'https://resident.co.nz/',
+                img: 'lustonelabel.png'
             }
         ]
 
