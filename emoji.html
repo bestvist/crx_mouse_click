@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="//twemoji.maxcdn.com/2/twemoji.min.js?11.2"></script>
+
+    <style>
+        img.emoji {
+            height: 1em;
+            width: 1em;
+            margin: 0 .05em 0 .1em;
+            vertical-align: -0.1em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="emoji"></div>
+
+    <script>
+        const str = '🖖 A progressive, incrementally-adoptable JavaScript framework for building UI on the web.';
+        document.querySelector('#emoji').innerHTML = twemoji.parse(str);
+    </script>
+</body>
+
+</html>

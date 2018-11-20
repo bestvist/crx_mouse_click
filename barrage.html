@@ -59,14 +59,13 @@
         class Barrage {
             constructor() {
                 this.canvas = document.createElement('canvas');
-
+                this.canvas.className = 'barrage-canvas';
                 this.canvas.style.position = 'fixed';
                 this.canvas.style.bottom = 0;
                 this.canvas.style.left = 0;
                 this.canvas.style.zIndex = 100;
                 this.canvas.style.pointerEvents = 'none';
                 this.canvas.width = window.innerWidth;
-                // this.canvas.height = window.innerHeight;
                 this.canvas.height = 200;
                 document.body.appendChild(this.canvas);
 
@@ -111,7 +110,7 @@
                         this.drawText(b);
                     }
                 }
-                requestAnimationFrame(this.draw.bind(this));
+                this._interval = requestAnimationFrame(this.draw.bind(this));
             }
 
             //绘制文字
@@ -144,6 +143,11 @@
             // 隐藏
             hide() {
                 this.canvas.style.visibility = 'hidden';
+            }
+
+            destroy(){
+                cancelAnimationFrame(this._interval);
+                document.body.removeChild(this.canvas);
             }
 
         }
@@ -205,6 +209,10 @@
             },
             mounted() {
                 this.init();
+
+                setTimeout(()=>{
+                    this.barrage.destroy();
+                },10000)
             }
         })
     </script>
